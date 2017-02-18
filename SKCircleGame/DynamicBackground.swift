@@ -44,6 +44,8 @@ class DynamicBackground: SKScene {
     var stop = false
     var timer: Timer? = nil
 
+    var currentTouchPosition = CGPoint.zero
+    
     var maxSize: CGFloat {
         return max(max(Constants.topLeft.distance(between: circle.position), Constants.topRight.distance(between: circle.position)), max(Constants.bottomLeft.distance(between: circle.position), Constants.bottomRight.distance(between: circle.position)))
     }
@@ -112,6 +114,7 @@ class DynamicBackground: SKScene {
     func update(size: CGFloat) {
         if !stop {
             circleSize = size
+            circle?.position = currentTouchPosition
         }
     }
     
@@ -128,12 +131,14 @@ class DynamicBackground: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
 
+            currentTouchPosition = touch.location(in: self)
+            
             if circle == nil {
                 circle = createCircle()
             }
             
             if circle.scene == nil && !stop {
-                circle.position = touch.location(in: self)
+                circle.position = currentTouchPosition
                 self.addChild(circle)
             }
             

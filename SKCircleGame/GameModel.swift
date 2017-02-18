@@ -156,7 +156,6 @@ class GameModel {
     func win() {
         let score = GKScore(leaderboardIdentifier: "spinzone.levels", player: GKLocalPlayer.localPlayer())
         score.value = Int64(GameModel.nextLevel)
-        
         GKScore.report([score], withCompletionHandler: { error in })
         
         // store the current score before next scene loads
@@ -180,30 +179,5 @@ class GameModel {
         let nextScene = GameLoseScene(size: Constants.currentSize)
         nextScene.backgroundColor = self.scene.backgroundColor
         self.scene.view?.presentScene(nextScene, transition: transition)
-        
-        /*
-        let cameraNode = SKCameraNode()
-        cameraNode.position = Constants.center
-        self.scene.addChild(cameraNode)
-        self.scene.camera = cameraNode
-        self.levelOneGoal.removeAllActions()
-        self.levelOneTrack.removeAllActions()
-        self.ball.removeAllActions()
-        
-        let zoomInAction = SKAction.scale(to: 0.5, duration: 0.15)
-        let wait = SKAction.wait(forDuration: 0.3)
-        let changePosition = SKAction.run {
-            cameraNode.position = Constants.center
-        }
-        let zoomOutAction = SKAction.scale(to: 1.0, duration: 0.15)
-        let next = SKAction.run {
-            let nextScene = GameLoseScene(size: Constants.currentSize)
-            nextScene.scaleMode = .aspectFill
-            nextScene.backgroundColor = self.scene.backgroundColor
-            self.scene.view?.presentScene(nextScene, transition: transition)
-        }
-        cameraNode.position = ball.position
-        cameraNode.run(SKAction.sequence([zoomInAction, wait, changePosition, zoomOutAction, next]))
-         */
     }
 }
