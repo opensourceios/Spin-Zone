@@ -10,14 +10,21 @@ import SpriteKit
 
 class ButtonSprite: SKSpriteNode {
 
-    let buttonTexture = SKTexture(imageNamed: "button")
+    let defaultSize = CGSize(width: 245.xScaled, height: 50.xScaled)
+    
+    
     let label: SKLabelNode
     var runOnClick: () -> () = { }
     
     init(title: String, under: ButtonSprite?) {
         label = SKLabelNode(title: title, fontSize: Constants.buttonFont, fontName: "Junegull", fontColor: DynamicBackground.currentColor)
         
-        super.init(texture: buttonTexture, color: UIColor.white, size: CGSize(width: 245.xScaled, height: 50.xScaled))
+        let shape = SKShapeNode(rect: CGRect(origin: CGPoint.zero, size: self.defaultSize), cornerRadius: (self.defaultSize.height) / 2)
+        shape.strokeColor = UIColor.white
+        shape.fillColor = UIColor.white
+        let buttonTexture = SKView().texture(from: shape)!
+        
+        super.init(texture: buttonTexture, color: UIColor.white, size: defaultSize)
         
         self.position = under == nil ? Constants.center : CGPoint(x: under!.position.x, y: under!.position.y - (10.yScaled + self.size.height))
         self.name = title
