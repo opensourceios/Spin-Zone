@@ -8,14 +8,10 @@
 
 import SpriteKit
 
-class ShopScene: ClickableScene {
+class AboutScene: ClickableScene {
     
     override func didMove(to view: SKView) {
-        self.sceneTitle(name: "Shop")
-    }
-    
-    deinit {
-        print("Deinit of ShopScene")
+        self.sceneTitle(name: "About")
     }
     
 }

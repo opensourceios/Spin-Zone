@@ -12,7 +12,6 @@ class ButtonSprite: SKSpriteNode {
 
     let defaultSize = CGSize(width: 245.xScaled, height: 50.xScaled)
     
-    
     let label: SKLabelNode
     var runOnClick: () -> () = { }
     
@@ -34,6 +33,29 @@ class ButtonSprite: SKSpriteNode {
         self.zPosition = 2
     }
     
+    init(bottomLeftTitle: String) {
+        
+        label = SKLabelNode(title: bottomLeftTitle, fontSize: 40)
+        label.alpha = 0.95
+        
+        let backgroundShape = SKShapeNode(circleOfRadius: Constants.smallButtonRadius)
+        backgroundShape.lineWidth = 0
+        backgroundShape.fillColor = UIColor.black
+        backgroundShape.alpha = 0.10
+        
+        super.init(texture: SKView().texture(from: backgroundShape)!, color: UIColor.white, size: CGSize(width: Constants.smallButtonRadius * 2, height: Constants.smallButtonRadius * 2))
+        
+        self.name = bottomLeftTitle
+        
+        // put at the bottom left
+        let leftPadding = 15.xScaled + Constants.smallButtonRadius
+        let bottomPadding = 15.xScaled + Constants.smallButtonRadius
+        let position = CGPoint(x: leftPadding, y: bottomPadding)
+        self.position = position
+        
+        self.addChild(label)
+    }
+    
     static var circleTexture: SKTexture {
         let circle = SKShapeNode(circleOfRadius: 64)
         circle.fillColor = UIColor.white
@@ -51,7 +73,6 @@ class ButtonSprite: SKSpriteNode {
         self.name = title
         
         let padding = (((self.frame.height / 2) / 2) / 2) / 2
-        // label.center
         label.fontName = "Junegull"
         label.position = CGPoint(x: self.position.x + self.frame.width, y: (self.position.y - padding) + self.frame.height)
         label.fontSize = 40

@@ -33,7 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		self.model = GameModel(scene: self, level: level)
 		
 		self.model.createTracks()
-		self.model.createPauseButton()
+		self.addChild(ButtonSprite(bottomLeftTitle: "||"))
 	}
 	
 	// used to block touches while the physics is being applied
@@ -75,8 +75,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	
 		if touched.categoryBitMask == Catigory.goal.rawValue {
 			model.updateScore()
+			model.audio.playPing()
 		} else if touched.categoryBitMask == Catigory.track.rawValue {
 			model.lose()
+			model.audio.playPing()
 		}
 		
 		touchable = false

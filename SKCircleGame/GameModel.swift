@@ -20,6 +20,11 @@ class GameModel {
         return nextLevel - 1
     }
     
+    static var retries: Int {
+        let fromConfig = UserDefaults.standard.integer(forKey: "retries")
+        return 1
+    }
+    
     var clockwise = true
 
     var ball: BallSprite! = nil
@@ -30,6 +35,10 @@ class GameModel {
     var levelOneGoal: GoalSprite!
     
     let scene: GameScene!
+    
+    lazy var audio: AudioHelper = {
+        return AudioHelper(scene: self.scene!)
+    }()
     
     init(scene: GameScene, level: Int) {
         self.scene = scene
@@ -67,8 +76,6 @@ class GameModel {
         ball.action = action
     }
     
-    // TODO: move into BallSprite class
-    
     func updateBall() {
         let dx = ball.position.x - Constants.center.x
         let dy = ball.position.y - Constants.center.y
@@ -102,19 +109,6 @@ class GameModel {
             }
             
         }
-    }
-    
-    func createPauseButton() {
-        /*
-        let x = self.scene.frame.maxX * -1
-        let y = self.scene.frame.maxY * -1
-        
-        //let pause = ButtonSprite(title: "❚❚", position: CGPoint(x: x, y: y))
-        let pause = SKSpriteNode(imageNamed: "pause")
-        pause.position = center
-        self.scene.addChild(pause)
-        //self.scene.addChild(pause.label)
-         */
     }
     
     func applyTrackPhysics() {
@@ -161,14 +155,36 @@ class GameModel {
         // store the current score before next scene loads
         UserDefaults.standard.set(GameModel.nextLevel, forKey: "score")
         
+        if (true) {
+            earnRetry()
+        } else {
+            presentNextScene()
+        }
+    }
+    
+    func presentNextScene() {
         let transition = SKTransition.push(with: .left, duration: 0.5)
         transition.pausesOutgoingScene = true
         transition.pausesIncomingScene = true
         
         let nextScene = GameScene(size: Constants.currentSize)
         nextScene.scaleMode = .aspectFill
-        nextScene.backgroundColor = scene.backgroundColor
+        nextScene.backgroundColor = self.scene.backgroundColor
         self.scene.view?.presentScene(nextScene, transition: transition)
+    }
+    
+    func earnRetry() {
+        if (true/*GameModel.nextLevel % 10 == 1*/) { // 11, 21, etc, give a new retry
+            let alert = UIAlertController(title: "1 Rety", message: "Congradulations! You have earned 1 Rety, earn one every 10 Levels", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Got it", style: .default, handler: { alert in
+                UserDefaults.standard.set(GameModel.retries + 1, forKey: "retries")
+            })
+            
+            alert.addAction(action)
+            alert.present((self.scene.view!.window!.rootViewController)!, animated: true, completion: {
+                self.presentNextScene()
+            })
+        }
     }
     
     func lose() {

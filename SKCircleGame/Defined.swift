@@ -28,6 +28,7 @@ struct Constants {
     static var xScaledIncrease = 25.xScaled
     static var lineWidth = 10.xScaled
     static var ballRadius = 20.xScaled
+    static var smallButtonRadius = 27.xScaled // help button & pause button background
     
     static var titleFont = 80.xScaled
     static var buttonFont = 30.xScaled

@@ -50,6 +50,8 @@ class GameStartMenu: ClickableScene {
         self.addChild(specialScore.background)
         self.addChild(specialScore.score)
         self.addChild(specialScore.levelTitle)
+        
+        self.addChild(ButtonSprite(bottomLeftTitle: "?"))
     }
 }
 
@@ -60,9 +62,10 @@ class SpecialScore {
         circle.alpha = 0.30
         circle.fillColor = UIColor.white
         circle.strokeColor = UIColor.gray.lighterColor(percent: 20)
-        circle.lineWidth = 5
+        circle.lineWidth = 3
         circle.zPosition = 4
         return SKSpriteNode(texture: SKView().texture(from: circle))
+        
     }()
     
     lazy var score: SKLabelNode = {
